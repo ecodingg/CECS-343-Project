@@ -1,11 +1,13 @@
 from tkinter import *
+#import XML
+#import beautifulsoup
 from menu import menu
 
 
 def login():
-   loginInput()
+   loginInfo = loginInput()
    #Check that Login is accurate
-   if (loginValidation):
+   if (loginValidation(loginInfo)):
       menu()
    else:
       print("Sorry that is the wrong Username and Password")
@@ -25,8 +27,11 @@ def loginInput():
    passwordText.pack( side = LEFT)
    passwordButton = Entry(top, bd =5)
    passwordButton.pack(side = LEFT)
-   return loginText, passwordText
+   username = loginButton
+   password = passwordButton
    top.mainloop()
+   return username, password
+   
 
 def loginValidation():
    #Checks that the input for Login is Valid
