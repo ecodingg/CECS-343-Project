@@ -19,6 +19,8 @@ def removeTenantRow():
     aptNumber = simpledialog.askinteger("User Input", "Enter the Apartment #: ")
     if aptNumber is None:
         return
+    #remove row with firstname & apt#
+    
         
 
 def addTenantRow():
