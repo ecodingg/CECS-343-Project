@@ -1,4 +1,5 @@
-from login import login
+from login import *
+from menu import *
 
 def main():
     login()

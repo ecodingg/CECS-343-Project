@@ -2,9 +2,9 @@ from tkinter import *
 from menu import menu
 
 
-class LoginInfo:
-   username: str
-   password: str
+# class LoginInfo:
+#    username: str
+#    password: str
 
 
 
@@ -33,9 +33,9 @@ def LoginInput():
    test = loginCredentials()
 
    if (test):
-      loginCredentials = LoginInfo()
-      loginCredentials.username = username
-      loginCredentials.password = password
+      # credentials = LoginInfo()
+      # credentials.username = username
+      # credentials.password = password
    
       f = open("loginInfo.txt", "w")
       f.write(username)
@@ -57,7 +57,7 @@ def LoginInput():
    
 #Checks to see that Login works
 def loginValidation(user, passW):
-   f = open("loginInfo.txt", "r")
+   f = open("loginInfo.txt", "w")
    loginArray = []
    
    for i in range(1,3):
@@ -72,7 +72,7 @@ def loginValidation(user, passW):
 
 
 def loginCredentials():
-   f = open("loginInfo.txt", "r")
+   f = open("loginInfo.txt", "w")
    if (len(f.read()) == 0):
       return True
    else:
