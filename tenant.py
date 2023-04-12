@@ -1,16 +1,19 @@
 from tkinter import * 
 from tkinter import simpledialog
+
 global tenantRow
 tenantRow = 0
-class Tenant:
-    firstName: str
-    lastName: str
-    email: str
-    age: int
-    rent: float
-    apt: int
 
-def removeTenantRow():
+class Tenant:
+    def __init__(self, firstName, lastName, email, age, rent, apt):
+        self.firstName = firstName
+        self.lastName = lastName
+        self.email = email
+        self.age = age
+        self.rent = rent
+        self.apt = apt
+
+def removeTenantRow(window):
     name = simpledialog.askstring("User Input", "Please enter the First Name: ")
     if name is None:
         return
@@ -23,7 +26,7 @@ def removeTenantRow():
     
         
 
-def addTenantRow():
+def addTenantRow(window):
     global tenantRow
     newFirstName = Entry(window)
     newLastName = Entry(window)
@@ -41,32 +44,34 @@ def addTenantRow():
 
     tenantRow += 1
 
-window = Tk()
+def startTenantList():
+    
+    window = Tk()
 
-# The Tenant List title displayed front and Center
-titleLabel = Label(window, text="Tenant List", font=("Arial", 16), padx=10, pady=10)
-titleLabel.grid(row=0, column=0, columnspan=6, sticky="N")
+    # The Tenant List title displayed front and Center
+    titleLabel = Label(window, text="Tenant List", font=("Arial", 16), padx=10, pady=10)
+    titleLabel.grid(row=0, column=0, columnspan=6, sticky="N")
 
-# create 6 columns for the tenant list
-firstNameLabel = Label(window, text="First Name", font=("Arial", 14), padx=10, pady=10)
-lastNameLabel = Label(window, text="Last Name", font=("Arial", 14), padx=10, pady=10)
-emailLabel = Label(window, text="Email", font=("Arial", 14), padx=10, pady=10)
-ageLabel = Label(window, text="Age", font=("Arial", 14), padx=10, pady=10)
-rentLabel = Label(window, text="Rent", font=("Arial", 14), padx=10, pady=10)
-aptLabel = Label(window, text="Apt #", font=("Arial", 14), padx=10, pady=10)
+    # create 6 columns for the tenant list
+    firstNameLabel = Label(window, text="First Name", font=("Arial", 14), padx=10, pady=10)
+    lastNameLabel = Label(window, text="Last Name", font=("Arial", 14), padx=10, pady=10)
+    emailLabel = Label(window, text="Email", font=("Arial", 14), padx=10, pady=10)
+    ageLabel = Label(window, text="Age", font=("Arial", 14), padx=10, pady=10)
+    rentLabel = Label(window, text="Rent", font=("Arial", 14), padx=10, pady=10)
+    aptLabel = Label(window, text="Apt #", font=("Arial", 14), padx=10, pady=10)
 
-# lay them out side by side
-row1 = 1
-firstNameLabel.grid(row=row1, column=0)
-lastNameLabel.grid(row=row1, column=1)
-emailLabel.grid(row=row1, column=2)
-ageLabel.grid(row=row1, column=3)
-rentLabel.grid(row=row1, column=4)
-aptLabel.grid(row=row1, column=5)
-# create add and delete tenant buttons
-addTenantButton = Button(window, text="Add Tenant", command=addTenantRow)
-addTenantButton.grid(row=100, column=0, columnspan=2, sticky="n")
-removeTenantButton = Button(window, text="Remove Tenant", command=removeTenantRow)
-removeTenantButton.grid(row=100, column=3, columnspan=2, sticky="n")
+    # lay them out side by side
+    row1 = 1
+    firstNameLabel.grid(row=row1, column=0)
+    lastNameLabel.grid(row=row1, column=1)
+    emailLabel.grid(row=row1, column=2)
+    ageLabel.grid(row=row1, column=3)
+    rentLabel.grid(row=row1, column=4)
+    aptLabel.grid(row=row1, column=5)
+    # create add and delete tenant buttons
+    addTenantButton = Button(window, text="Add Tenant", command=lambda: addTenantRow(window))
+    addTenantButton.grid(row=100, column=0, columnspan=2, sticky="n")
+    removeTenantButton = Button(window, text="Remove Tenant", command=lambda: removeTenantRow(window))
+    removeTenantButton.grid(row=100, column=3, columnspan=2, sticky="n")
 
-window.mainloop()
+    window.mainloop()
