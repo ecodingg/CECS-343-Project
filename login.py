@@ -2,9 +2,9 @@ from tkinter import *
 from menu import menu
 
 
-class LoginInfo:
-   username: str
-   password: str
+# class LoginInfo:
+#    username: str
+#    password: str
 
 
 
@@ -31,9 +31,9 @@ def LoginInput():
    test = loginCredentials()
 
    if (test):
-      credentials = LoginInfo()
-      credentials.username = username
-      credentials.password = password
+      # credentials = LoginInfo()
+      # credentials.username = username
+      # credentials.password = password
    
       f = open("loginInfo.txt", "w")
       f.write(username)
