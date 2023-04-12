@@ -1,5 +1,6 @@
 from tkinter import * 
 from tkinter import simpledialog
+import csv
 
 global tenantRow
 tenantRow = 0
@@ -12,6 +13,9 @@ class Tenant:
         self.age = age
         self.rent = rent
         self.apt = apt
+
+    def __iter__(self):
+        return iter([self.firstName, self.lastName, self.email, self.age, self.rent, self.apt])
 
 def removeTenantRow(window):
     name = simpledialog.askstring("User Input", "Please enter the First Name: ")
@@ -28,21 +32,36 @@ def removeTenantRow(window):
 
 def addTenantRow(window):
     global tenantRow
-    newFirstName = Entry(window)
-    newLastName = Entry(window)
-    newEmail = Entry(window)
-    newAge = Entry(window)
-    newRent = Entry(window)
-    newApt = Entry(window)
+    # newFirstName = Entry(window)
+    # newLastName = Entry(window)
+    # newEmail = Entry(window)
+    # newAge = Entry(window)
+    # newRent = Entry(window)
+    # newApt = Entry(window)
 
-    newFirstName.grid(row=2 + tenantRow, column=0, padx=5, pady=10)
-    newLastName.grid(row=2 + tenantRow, column=1, padx=5, pady=10)
-    newEmail.grid(row=2 + tenantRow, column=2, padx=5, pady=10)
-    newAge.grid(row=2 + tenantRow, column=3, padx=5, pady=10)
-    newRent.grid(row=2 + tenantRow, column=4, padx=5, pady=10)
-    newApt.grid(row=2 + tenantRow, column=5, padx=5, pady=10)
+    # newFirstName.grid(row=2 + tenantRow, column=0, padx=5, pady=10)
+    # newLastName.grid(row=2 + tenantRow, column=1, padx=5, pady=10)
+    # newEmail.grid(row=2 + tenantRow, column=2, padx=5, pady=10)
+    # newAge.grid(row=2 + tenantRow, column=3, padx=5, pady=10)
+    # newRent.grid(row=2 + tenantRow, column=4, padx=5, pady=10)
+    # newApt.grid(row=2 + tenantRow, column=5, padx=5, pady=10)
+    newFirstName = simpledialog.askstring("User Input", "Please enter the First Name: ")
+    newLastName = simpledialog.askstring("User Input", "Please enter the Last Name: ")
+    newEmail = simpledialog.askstring("User Input", "Please enter the email: ")
+    newAge = simpledialog.askstring("User Input", f"Please enter {newFirstName}'s age: ")
+    newRent = simpledialog.askstring("User Input", "Please enter the Rent amount: ")
+    newApt = simpledialog.askstring("User Input", "Please enter the apt#: ")
+
 
     tenantRow += 1
+
+    newTenant = Tenant(newFirstName, newLastName, newEmail, newAge, newRent, newApt)
+
+    with open("tenantTest.csv", "w", newline="") as stream:
+        writer = csv.writer(stream)
+        writer.writerow(newTenant)
+
+
 
 def startTenantList():
     

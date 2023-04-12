@@ -18,7 +18,7 @@ def menu():
     tabControl.add(tab3, text='Expense Record')
     tabControl.add(tab4, text='Annual Summary')
     tabControl.pack(expand = 1, fill ="both")
-    addTenantButton = Button(root, text="Add Tenant", command=startTenantList)
+    addTenantButton = Button(root, text="Open Tenant List", command=startTenantList)
     addTenantButton.pack()
 
 
