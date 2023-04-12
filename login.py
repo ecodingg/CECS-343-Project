@@ -16,21 +16,15 @@ def login():
 def LoginInput():
    #Inputting Login Credentials 
    top = Tk()
-   frame = Frame(top)
-   frame.pack()
-   bottomframe = Frame(top)
-   bottomframe.pack(side = BOTTOM)
    loginText = Label(top, text="User Name")
    loginText.pack( side = LEFT)
-   loginButton = Entry(top, bd =4)
+   loginButton = Entry(top, bd =5)
    loginButton.pack(side = LEFT)
    passwordText = Label(top, text="Password")
    passwordText.pack( side = LEFT)
-   passwordButton = Entry(top, bd =4)
+   passwordButton = Entry(top, bd =5)
    passwordButton.pack(side = LEFT)
-   submitButton = Button(bottomframe, text="Submit")
-   submitButton.pack( side = BOTTOM)
-   return loginText, passwordText, submitButton
+   return loginText, passwordText
    top.mainloop()
 
    username = loginButton
