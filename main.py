@@ -1,6 +1,7 @@
 from login import login
+from menu import *
 
 def main():
-    login()
+    menu()
 
 main()

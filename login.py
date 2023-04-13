@@ -25,14 +25,8 @@ def loginInput():
    passwordText.pack( side = LEFT)
    passwordButton = Entry(top, bd =5)
    passwordButton.pack(side = LEFT)
-   return loginText, passwordText
    top.mainloop()
 
-<<<<<<< Updated upstream
-def loginValidation():
-   #Checks that the input for Login is Valid
-   print("This is not done yet")
-=======
    username = loginButton
    password = passwordButton
 
@@ -84,5 +78,4 @@ def loginCredentials():
    else:
       return False
    
->>>>>>> Stashed changes
    
