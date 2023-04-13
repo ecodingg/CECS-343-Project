@@ -1,51 +1,38 @@
 from tkinter import *
+import tkinter as tk
+import os
 from menu import menu
 
 
-# class LoginInfo:
-#    username: str
-#    password: str
-
-
-
 def login():
-   LoginInput()
+   root = tk.Tk()
+   #These are string inputs for buttons
+   username = tk.StringVar()
+   password = tk.StringVar()
 
-   
-
-def LoginInput():
-   #Inputting Login Credentials 
-   top = Tk()
-   loginText = Label(top, text="User Name")
+   loginText = Label(root, text="User Name")
    loginText.pack( side = LEFT)
-   loginButton = Entry(top, bd =5)
+   loginButton = Entry(root, bd =5, textvariable=username)
    loginButton.pack(side = LEFT)
-   passwordText = Label(top, text="Password")
-   passwordText.pack( side = LEFT)
-   passwordButton = Entry(top, bd =5)
+   passwordText = Label(root, text="Password")
+   passwordText.pack(side = LEFT)
+   passwordButton = Entry(root, bd =5, textvariable=password)
    passwordButton.pack(side = LEFT)
 
-   username = loginButton
-   password = passwordButton
-
-   test = loginCredentials()
-
-   if (test):
-      # credentials = LoginInfo()
-      # credentials.username = username
-      # credentials.password = password
-   
+   root.mainloop()
+   if (loginCredentials()):
       f = open("loginInfo.txt", "w")
-      f.write(username)
+      #This is how you write it to file
+      f.write(username.get())
       f.write("\n")
-      f.write(password)
+      f.write(password.get())
       f.close()
-   
-      top.mainloop()
-      return loginCredentials
+
+      root.destroy()
+      menu()
    else:
-      testTwo = loginValidation(username, password)
-      if (testTwo):
+      if (loginValidation(username, password)):
+         root.destroy()
          menu()
       else:
          print("Try to login again")
@@ -58,7 +45,7 @@ def loginValidation(user, passW):
    f = open("loginInfo.txt", "w")
    loginArray = []
    
-   for i in range(1,3):
+   for i in range(1,2):
       loginArray.append(f.readline())
 
    if (user == loginArray[1]):
@@ -70,8 +57,8 @@ def loginValidation(user, passW):
 
 
 def loginCredentials():
-   f = open("loginInfo.txt", "w")
-   if (len(f.read()) == 0):
+   loginSize = os.stat("loginInfo.txt").st_size
+   if (loginSize == 0):
       return True
    else:
       return False
