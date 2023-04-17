@@ -10,6 +10,7 @@ def login():
    username = tk.StringVar()
    password = tk.StringVar()
 
+   introText = Label(root, text="Welcome!")
    loginText = Label(root, text="User Name")
    loginText.pack( side = LEFT)
    loginButton = Entry(root, bd =5, textvariable=username)
@@ -20,7 +21,7 @@ def login():
    passwordButton.pack(side = LEFT)
 
    root.mainloop()
-   if (loginCredentials()):
+   if (loginCredentials() == True):
       f = open("loginInfo.txt", "w")
       #This is how you write it to file
       f.write(username.get())
@@ -31,7 +32,7 @@ def login():
       root.destroy()
       menu()
    else:
-      if (loginValidation(username, password)):
+      if (loginValidation(username.get(), password.get())):
          root.destroy()
          menu()
       else:
