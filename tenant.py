@@ -19,8 +19,9 @@ class Tenant:
     
     def __str__(self):
         return f"{self.firstName}, {self.lastName}, {self.email}, {self.age}, {self.rent}, {self.apt}"
-
+#keep working to get rid of bug
 def removeTenantRow(window):
+    global tenantRow
     name = simpledialog.askstring("User Input", "Please enter the First Name: ")
     if name is None:
         return
@@ -30,7 +31,20 @@ def removeTenantRow(window):
     if aptNumber is None:
         return
     #remove row with firstname & apt#
-    
+    # works similar to the add tenant row but will delete row if 
+    # both firstname and aptnumber are in that specific row
+    for r in range(2,2 + tenantRow):
+        rowEntries = []
+        for c in range(0, 6):
+            entry = window.grid_slaves(row=r, column=c)[0]
+            print("Row# inside removeTenant: ", r)
+            rowEntries.append(entry)
+        if rowEntries[0].get() == name and int(rowEntries[5].get()) == aptNumber:
+            # delete the entire row
+            for value in window.grid_slaves(row=r):
+                value.grid_forget()
+            tenantRow -= 1
+
         
 
 def addTenantRow(window):
@@ -48,35 +62,47 @@ def addTenantRow(window):
     newAge.grid(row=2 + tenantRow, column=3, padx=5, pady=10)
     newRent.grid(row=2 + tenantRow, column=4, padx=5, pady=10)
     newApt.grid(row=2 + tenantRow, column=5, padx=5, pady=10)
-    # newFirstName = simpledialog.askstring("User Input", "Please enter the First Name: ")
-    # newLastName = simpledialog.askstring("User Input", "Please enter the Last Name: ")
-    # newEmail = simpledialog.askstring("User Input", "Please enter the email: ")
-    # newAge = simpledialog.askstring("User Input", f"Please enter {newFirstName}'s age: ")
-    # newRent = simpledialog.askstring("User Input", "Please enter the Rent amount: ")
-    # newApt = simpledialog.askstring("User Input", "Please enter the apt#: ")
-
 
     tenantRow += 1
 
 
 def saveTenants(window):
-    tenantEntries = []
+    #create an empty list to save all tenants
     tenantList = []
-    for r in range(2, tenantRow):
+    for r in range(2, 2 + tenantRow):
+        print("Row: ", r, "TenantRow: ", tenantRow, window.grid_size()[1])
+        #this list will save the entries of each row
+        tenantEntries = []
         for c in range(0, 6):
-            cell = Entry(window)
-            cell.grid(row=r, column=c)
-            print(cell.get())
-            tenantEntries.append(cell.get())
+            entry = window.grid_slaves(row=r, column=c)[0]
+            tenantEntries.append(entry.get())
         tenant = Tenant(tenantEntries[0], tenantEntries[1], tenantEntries[2], tenantEntries[3], tenantEntries[4], tenantEntries[5])
         tenantEntries.clear()
         tenantList.append(tenant)
-
-    print(tenantList)
-    with open("tenantTest.txt", "w", newline="") as stream:
-        writer = csv.writer(stream)
+        print("End of Row: ", r)
+    # save list to a csv
+    with open("tenantTest.txt", "w", newline="") as output:
+        writer = csv.writer(output)
         for entry in tenantList:
             writer.writerow(entry)
+
+def populateList(window):
+    global tenantRow
+    with open('tenantTest.txt', newline='') as input:
+        reader = csv.reader(input)
+
+        # iterate over each row in the CSV file
+        for i, row in enumerate(reader):
+            # create a new row in the grid
+            for j, value in enumerate(row):
+                # create an Entry widget with the value from the CSV file
+                entry = Entry(window)
+                entry.grid(row=i+2, column=j, padx=5, pady=10)
+
+                # set the value of the Entry widget to the value from the CSV file
+                entry.insert(0, value)
+                
+            tenantRow += 1
 
 
 def startTenantList():
@@ -103,6 +129,8 @@ def startTenantList():
     ageLabel.grid(row=row1, column=3)
     rentLabel.grid(row=row1, column=4)
     aptLabel.grid(row=row1, column=5)
+    # populate list from a csv
+    populateList(window)
     # create add button
     addTenantButton = Button(window, text="Add Tenant", command=lambda: addTenantRow(window))
     addTenantButton.grid(row=100, column=0, columnspan=2, sticky="n")
@@ -113,3 +141,5 @@ def startTenantList():
     removeTenantButton.grid(row=100, column=4, columnspan=2, sticky="n")
 
     window.mainloop()
+
+startTenantList()
