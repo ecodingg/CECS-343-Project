@@ -1,3 +1,4 @@
+import csv
 from csv import *
 from tkinter import *
 from tkinter import messagebox
@@ -9,14 +10,28 @@ deleted = 0
 expenseRow = 0
 mainExpenseList = []
 
-def addExpense():
+def addExpense(pd = None, p = None, a = None, bc = None):
     global expenseRow
     global mainExpenseList
 
-    paymentDate = Text(window, height=1, width=16, font=("Arial", 10))
-    payee = Text(window, height=1, width=16, font=("Arial", 10))
-    amount = Text(window, height=1, width=16, font=("Arial", 10))
-    budgetCategory = Text(window, height=1, width=16, font=("Arial", 10))
+    if pd == None and p == None and a == None and bc == None:
+        paymentDate = Text(window, height=1, width=16, font=("Arial", 10))
+        payee = Text(window, height=1, width=16, font=("Arial", 10))
+        amount = Text(window, height=1, width=16, font=("Arial", 10))
+        budgetCategory = Text(window, height=1, width=16, font=("Arial", 10))
+    else:
+        paymentDate = Text(window, height=1, width=16, font=("Arial", 10))
+        paymentDate.insert("1.0", pd)
+
+        payee = Text(window, height=1, width=16, font=("Arial", 10))
+        payee.insert("1.0", p)
+
+        amount = Text(window, height=1, width=16, font=("Arial", 10))
+        amount.insert("1.0", a)
+
+        budgetCategory = Text(window, height=1, width=16, font=("Arial", 10))
+        budgetCategory.insert("1.0", bc)
+        
 
     paymentDate.grid(row=2 + expenseRow, column=1, padx=5, pady=10)
     payee.grid(row=2 + expenseRow, column=2, padx=5, pady=10)
@@ -24,30 +39,32 @@ def addExpense():
     budgetCategory.grid(row=2 + expenseRow, column=4, padx=5, pady=10)
 
     #when you click the "X" button, deletes the entire row and moves everything up
-    #figure out why indexes are wrong
     def deleteRow():
-        global deleted
-        index = paymentDate.grid_info()["row"] - 2 - deleted
-        print(index)
-        if len(mainExpenseList) == 1:
-            mainExpenseList.pop(0)
+        if len(paymentDate.get(1.0, "end-1c")) == 0 and len(paymentDate.get(1.0, "end-1c")) == 0 and len(amount.get(1.0, "end-1c")) == 0 and len(budgetCategory.get(1.0, "end-1c")) == 0:
+            paymentDate.destroy()
+            payee.destroy()
+            amount.destroy()
+            budgetCategory.destroy()
+            deleteButton.destroy()
+            updateButton.destroy()
         else:
-            mainExpenseList.pop(index)
+            expenseRecord = [paymentDate.get(1.0, "end-1c"), payee.get(1.0, "end-1c"),
+                        amount.get(1.0, "end-1c"), budgetCategory.get(1.0, "end-1c")]
+            mainExpenseList.remove(expenseRecord)
 
-        paymentDate.destroy()
-        payee.destroy()
-        amount.destroy()
-        budgetCategory.destroy()
-        deleteButton.destroy()
-        updateButton.destroy()
-
-        deleted += 1
+            paymentDate.destroy()
+            payee.destroy()
+            amount.destroy()
+            budgetCategory.destroy()
+            deleteButton.destroy()
+            updateButton.destroy()
 
     deleteButton = Button(window, text="X", command = deleteRow)
     deleteButton.grid(row=2 + expenseRow, column=0, padx=5, pady=10)
 
+    #the user cannot click the checkmark twice, otherwise the earth explodes
     def update():
-        expenseList=[paymentDate.get(1.0, "end-1c"), payee.get(1.0, "end-1c"), 
+        expenseList=[paymentDate.get(1.0, "end-1c"), payee.get(1.0, "end-1c"),
                     amount.get(1.0, "end-1c"), budgetCategory.get(1.0, "end-1c")]
         mainExpenseList.append(expenseList)
 
@@ -57,11 +74,30 @@ def addExpense():
     expenseRow += 1
 
 def save():
-    with open("expenserecord.csv", "w") as file:
+
+    duplicateCheck = []
+    [duplicateCheck.append(x) for x in mainExpenseList if x not in duplicateCheck]
+
+    with open("expenserecord.csv", "w", encoding="UTF8", newline="") as file:
         Writer = writer(file)
         Writer.writerow(["Payment Date", "Payee", "Amount", "Budget Category"])
-        Writer.writerow(mainExpenseList)
+        for x in duplicateCheck:
+            Writer.writerow(x)
         messagebox.showinfo("System", "Saved successfully")
+
+#PLEASE load first if there is data in the csv file!
+def load():
+    with open("expenserecord.csv", 'r') as f:
+        csv_reader = csv.reader(f)
+        for line_no, line in enumerate(csv_reader, 1):
+            if line_no == 1:
+                pass
+            else:
+                addExpense(line[0], line[1], line[2], line[3])
+                expenseRecord = [line[0], line[1], line[2], line[3]]
+                mainExpenseList.append(expenseRecord)
+    loadButton.destroy()
+
 
 window = Tk()
 titleLabel = Label(window, text="Expense Record", font=("Arial", 16), padx=10, pady=10)
@@ -77,10 +113,13 @@ payeeLabel.grid(row = 1, column=2)
 amountLabel.grid(row = 1, column=3)
 categoryLabel.grid(row = 1, column=4)
 
+addButton = Button(window, text="Add Expense", command=addExpense)
+addButton.grid(row=100, column=2)
+
 saveButton = Button(window, text="Save", command=save)
 saveButton.grid(row=100, column=3)
 
-addButton = Button(window, text="Add Expense", command=addExpense)
-addButton.grid(row=100, column=2)
+loadButton = Button(window, text="Load Saved File", command=load)
+loadButton.grid(row=100, column=4)
 
 window.mainloop()
