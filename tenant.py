@@ -5,6 +5,7 @@ import csv
 global tenantRow
 tenantRow = 0
 
+
 class Tenant:
     def __init__(self, firstName, lastName, email, age, rent, apt):
         self.firstName = firstName
@@ -19,6 +20,8 @@ class Tenant:
     
     def __str__(self):
         return f"{self.firstName}, {self.lastName}, {self.email}, {self.age}, {self.rent}, {self.apt}"
+    
+
 #keep working to get rid of bug
 def removeTenantRow(window):
     global tenantRow
@@ -39,15 +42,23 @@ def removeTenantRow(window):
             entry = window.grid_slaves(row=r, column=c)[0]
             print("Row# inside removeTenant: ", r)
             rowEntries.append(entry)
+
         if rowEntries[0].get() == name and int(rowEntries[5].get()) == aptNumber:
-            # delete the entire row
+            #delete the entire row
             for value in window.grid_slaves(row=r):
-                value.grid_forget()
+                value.destroy()
+            # update row numbers
+            for k in range(r+1, 2 + tenantRow):
+                print("k,", k)
+                for l in range(6):
+                    print("l,", l)
+                    widget = window.grid_slaves(row=k, column=l)[0]
+                    widget.grid(row=k-1, column=l,padx=5, pady=10)
             tenantRow -= 1
+            break
+            
 
-        
-
-def addTenantRow(window):
+def addTenantRow(window,saveTenantButton, addTenantButton, removeTenantButton):
     global tenantRow
     newFirstName = Entry(window)
     newLastName = Entry(window)
@@ -64,7 +75,9 @@ def addTenantRow(window):
     newApt.grid(row=2 + tenantRow, column=5, padx=5, pady=10)
 
     tenantRow += 1
-
+    addTenantButton.grid(row=2 + tenantRow, column=0, columnspan=2, sticky="n")
+    saveTenantButton.grid(row=2 + tenantRow, column=2, columnspan=3, sticky="n")
+    removeTenantButton.grid(row=2 + tenantRow, column=4, columnspan=2, sticky="n")
 
 def saveTenants(window):
     #create an empty list to save all tenants
@@ -86,13 +99,15 @@ def saveTenants(window):
         for entry in tenantList:
             writer.writerow(entry)
 
-def populateList(window):
+
+def populateList(window, saveTenantButton, addTenantButton, removeTenantButton):
     global tenantRow
     with open('tenantTest.txt', newline='') as input:
         reader = csv.reader(input)
 
         # iterate over each row in the CSV file
         for i, row in enumerate(reader):
+            print("Number of rows in pop_list",window.grid_size()[1])
             # create a new row in the grid
             for j, value in enumerate(row):
                 # create an Entry widget with the value from the CSV file
@@ -103,6 +118,11 @@ def populateList(window):
                 entry.insert(0, value)
                 
             tenantRow += 1
+
+    addTenantButton.grid(row=2 + tenantRow, column=0, columnspan=2, sticky="n")
+    saveTenantButton.grid(row=2 + tenantRow, column=2, columnspan=3, sticky="n")
+    removeTenantButton.grid(row=2 + tenantRow, column=4, columnspan=2, sticky="n")
+
 
 
 def startTenantList():
@@ -129,17 +149,17 @@ def startTenantList():
     ageLabel.grid(row=row1, column=3)
     rentLabel.grid(row=row1, column=4)
     aptLabel.grid(row=row1, column=5)
-    # populate list from a csv
-    populateList(window)
-    # create add button
-    addTenantButton = Button(window, text="Add Tenant", command=lambda: addTenantRow(window))
-    addTenantButton.grid(row=100, column=0, columnspan=2, sticky="n")
-    # create save button
-    addTenantButton = Button(window, text="Save", command=lambda: saveTenants(window))
-    addTenantButton.grid(row=100, column=2, columnspan=3, sticky="n")
-    removeTenantButton = Button(window, text="Remove Tenant", command=lambda: removeTenantRow(window))
-    removeTenantButton.grid(row=100, column=4, columnspan=2, sticky="n")
 
+    # create add button
+    addTenantButton = Button(window, text="Add Tenant", command=lambda: addTenantRow(window, saveTenantButton, addTenantButton, removeTenantButton))
+    addTenantButton.grid(row=2 + tenantRow, column=0, columnspan=2, sticky="n")
+    # create save button
+    saveTenantButton = Button(window, text="Save", command=lambda: saveTenants(window))
+    saveTenantButton.grid(row=2 + tenantRow, column=2, columnspan=3, sticky="n")
+    removeTenantButton = Button(window, text="Remove Tenant", command=lambda: removeTenantRow(window))
+    removeTenantButton.grid(row=2 + tenantRow, column=4, columnspan=2, sticky="n")
+    # populate list from a csv
+    populateList(window, saveTenantButton, addTenantButton, removeTenantButton)
     window.mainloop()
 
 startTenantList()
