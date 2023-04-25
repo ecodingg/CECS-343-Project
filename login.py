@@ -12,6 +12,7 @@ def login():
 
    introText = Label(root, text="Welcome!")
    loginText = Label(root, text="User Name")
+   introText.pack(side = TOP)
    loginText.pack( side = LEFT)
    loginButton = Entry(root, bd =5, textvariable=username)
    loginButton.pack(side = LEFT)
@@ -38,22 +39,21 @@ def login():
       else:
          print("Try to login again")
 
-
-   
    
 #Checks to see that Login works
 def loginValidation(user, passW):
-   f = open("loginInfo.txt", "w")
+   f = open("loginInfo.txt", "r")
    loginArray = []
+   content = f.readlines()
    
-   for i in range(1,2):
-      loginArray.append(f.readline())
+   loginArray.append(content[0])
+   loginArray.append(content[1])
+   
 
    if (user == loginArray[1]):
       if(passW == loginArray[2]):
          return True
    else:
-      print("Incorrect Login Credentials")
       return False
 
 
@@ -62,6 +62,7 @@ def loginCredentials():
    if (loginSize == 0):
       return True
    else:
+      print("Incorrect Password")
       return False
    
    
