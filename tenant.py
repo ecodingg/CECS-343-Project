@@ -33,14 +33,13 @@ def removeTenantRow(window):
     aptNumber = simpledialog.askinteger("User Input", "Enter the Apartment #: ")
     if aptNumber is None:
         return
-    #remove row with firstname & apt#
+    # remove row with firstname & apt#
     # works similar to the add tenant row but will delete row if 
     # both firstname and aptnumber are in that specific row
     for r in range(2,2 + tenantRow):
         rowEntries = []
         for c in range(0, 6):
             entry = window.grid_slaves(row=r, column=c)[0]
-            print("Row# inside removeTenant: ", r)
             rowEntries.append(entry)
 
         if rowEntries[0].get() == name and int(rowEntries[5].get()) == aptNumber:
@@ -49,9 +48,7 @@ def removeTenantRow(window):
                 value.destroy()
             # update row numbers
             for k in range(r+1, 2 + tenantRow):
-                print("k,", k)
                 for l in range(6):
-                    print("l,", l)
                     widget = window.grid_slaves(row=k, column=l)[0]
                     widget.grid(row=k-1, column=l,padx=5, pady=10)
             tenantRow -= 1
@@ -83,7 +80,6 @@ def saveTenants(window):
     #create an empty list to save all tenants
     tenantList = []
     for r in range(2, 2 + tenantRow):
-        print("Row: ", r, "TenantRow: ", tenantRow, window.grid_size()[1])
         #this list will save the entries of each row
         tenantEntries = []
         for c in range(0, 6):
@@ -92,7 +88,6 @@ def saveTenants(window):
         tenant = Tenant(tenantEntries[0], tenantEntries[1], tenantEntries[2], tenantEntries[3], tenantEntries[4], tenantEntries[5])
         tenantEntries.clear()
         tenantList.append(tenant)
-        print("End of Row: ", r)
     # save list to a csv
     with open("tenantTest.txt", "w", newline="") as output:
         writer = csv.writer(output)
@@ -107,13 +102,11 @@ def populateList(window, saveTenantButton, addTenantButton, removeTenantButton):
 
         # iterate over each row in the CSV file
         for i, row in enumerate(reader):
-            print("Number of rows in pop_list",window.grid_size()[1])
             # create a new row in the grid
             for j, value in enumerate(row):
                 # create an Entry widget with the value from the CSV file
                 entry = Entry(window)
                 entry.grid(row=i+2, column=j, padx=5, pady=10)
-
                 # set the value of the Entry widget to the value from the CSV file
                 entry.insert(0, value)
                 

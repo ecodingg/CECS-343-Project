@@ -1,5 +1,4 @@
-Diego,Del,example.com,22,3000,4
-testname,testlname,test.com,100,1500,3
 kratos,greece,sparta.com,68,200,7
 onemoretest,tesing,dkjfla,66,7777,89
 can ,this be it?,dfasdf,5,8088,17
+Damian,Del,d.12526 .com,9,8000,13
