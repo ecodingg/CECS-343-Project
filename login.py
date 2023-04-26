@@ -23,7 +23,7 @@ def login():
 
    root.mainloop()
    if (loginCredentials() == True):
-      f = open("loginInfo.txt", "w")
+      f = open("loginInfo.txt", "w", encoding="UTF8", newline="")
       #This is how you write it to file
       f.write(username.get())
       f.write("\n")
@@ -42,16 +42,17 @@ def login():
    
 #Checks to see that Login works
 def loginValidation(user, passW):
-   f = open("loginInfo.txt", "r")
+   f = open("loginInfo.txt", "r", encoding="UTF8", newline="")
    loginArray = []
    content = f.readlines()
    
    loginArray.append(content[0])
    loginArray.append(content[1])
    
+   print(user)
 
-   if (user == loginArray[1]):
-      if(passW == loginArray[2]):
+   if (user == loginArray[0]):
+      if(passW == loginArray[1]):
          return True
    else:
       return False
