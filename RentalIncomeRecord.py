@@ -19,8 +19,18 @@ garen = Tenant("garen","demacia","gdemacia@gmail.com",25,1400,4)
 lux = Tenant("lux","light","lightwillguide@gmail.com",28,1200,5)
 practice = [kevin,sarah,shaco,garen,lux]
 
+def removeTenant(email):
+    for ten in practice:
+        if(ten.email == email):
+            practice.remove(ten)
+def removeRow(email):
+    removeTenant(email)
+    for label in window.winfo_children():
+        label.destroy()
+    startWindow()
+
 def writeTenants(): #reads TenantLists and make chart in window
-    print("READ FROM THE LIST AND ADD THEM")
+    # print("READ FROM THE LIST AND ADD THEM")
     tenants = practice #IN THE FUTURE NEED FUNCTION TO BRING LIST OF TENANTS FROM STORED DATA
     tRow = 2
     for ten in range(len(tenants)):
@@ -35,11 +45,60 @@ def writeTenants(): #reads TenantLists and make chart in window
         tPD.grid(row = tRow, column=3)
         tOnTime = Label(window, text = "ONTIME?", font=("Arial", 14), padx=10, pady=10)
         tOnTime.grid(row=tRow, column=4)
+        delete = Button(window, text = 'X', command=lambda email = tenant.email: removeRow(email))
+        delete.grid(row = tRow, column = 5)
         tRow = tRow +1
 
 def editRecord():
-    print("WORK")
+    tenants = practice #IN THE FUTURE NEED FUNCTION TO BRING LIST OF TENANTS FROM STORED DATA
+    tRow = 2
+    for ten in range(len(tenants)):
+        tenant = tenants[ten]
+        tName = Entry(window)
+        tName.insert(0, tenant.firstName + " " + tenant.lastName)
+        tName.grid(row = tRow, column = 0)
+        tRent = Entry(window)
+        tRent.insert(0, tenant.rent)
+        tRent.grid(row = tRow, column=1)
+        tPDD = Entry(window)
+        tPDD.insert(0, "DUEDATE")
+        tPDD.grid(row=tRow, column=2)
+        tPD = Entry(window)
+        tPD.insert(0,"PAID DATE")
+        tPD.grid(row = tRow, column=3)
+        tOnTime = Entry(window)
+        tOnTime.insert(0,"LATER WORK")
+        tOnTime.grid(row=tRow, column=4)
 
+        tRow = tRow +1
+
+def save():
+    counter = 0
+    for label in window.winfo_children():
+        if(type(label) == Entry):
+
+            person = counter//5
+            section = counter%5
+            if (section ==0 ):
+                firstName = label.get().split()[0]
+                lastName = label.get().split()[1]
+                # print("First: "+ firstName)
+                # print( label.get().split())
+                # print("LAst: " + lastName)
+                practice[person].firstName = firstName
+                practice[person].lastName = lastName
+            elif (section ==1):
+                practice[person].rent = label.get()
+            # elif (section ==2):
+            #
+            # elif (section ==3):
+            #
+            # elif (section ==4):
+
+            counter = counter +1
+    for label in window.winfo_children():
+        label.destroy()
+    startWindow()
 def addTenantRow():
     global tenantRow
     newFirstName = Entry(window)
@@ -58,8 +117,6 @@ def addTenantRow():
 
     tenantRow += 1
 
-def submitChange():
-    print("WORK")
 
 window = Tk()
 def startWindow():
@@ -80,9 +137,8 @@ def startWindow():
 
     editButton = Button(window, text="Edit", command=editRecord)
     editButton.grid(row=100, column=0, columnspan=2, sticky="n")
-    submitButton = Button(window, text="Remove Tenant", command= submitChange)
-    submitButton.grid(row=100, column=3, columnspan=2, sticky="n")
-
+    editButton = Button(window, text="Save", command=save)
+    editButton.grid(row=100, column=3, columnspan=2, sticky="n")
     writeTenants()
     window.mainloop()
 startWindow()
