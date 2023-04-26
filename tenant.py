@@ -7,20 +7,24 @@ tenantRow = 0
 
 
 class Tenant:
-    def __init__(self, firstName, lastName, email, age, rent, apt):
+    def __init__(self, firstName, lastName, email, age, rent, apt, paymentDueDate, paymentDate, isPaid):
         self.firstName = firstName
         self.lastName = lastName
         self.email = email
         self.age = age
         self.rent = rent
         self.apt = apt
+        self.paymentDueDate = paymentDueDate
+        self.paymentDate = paymentDate
+        self.isPaid = isPaid
 
     def __iter__(self):
-        return iter([self.firstName, self.lastName, self.email, self.age, self.rent, self.apt])
+        return iter([self.firstName, self.lastName, self.email, self.age, self.rent, self.apt, self.paymentDueDate, self.paymentDate, self.isPaid])
     
     def __str__(self):
-        return f"{self.firstName}, {self.lastName}, {self.email}, {self.age}, {self.rent}, {self.apt}"
+        return f"{self.firstName}, {self.lastName}, {self.email}, {self.age}, {self.rent}, {self.apt}, {self.paymentDueDate}, {self.paymentDate}, {self.isPaid}"
     
+
 
 #keep working to get rid of bug
 def removeTenantRow(window):
@@ -73,7 +77,7 @@ def addTenantRow(window,saveTenantButton, addTenantButton, removeTenantButton):
 
     tenantRow += 1
     addTenantButton.grid(row=2 + tenantRow, column=0, columnspan=2, sticky="n")
-    saveTenantButton.grid(row=2 + tenantRow, column=2, columnspan=3, sticky="n")
+    saveTenantButton.grid(row=2 + tenantRow, column=2, columnspan=2, sticky="n")
     removeTenantButton.grid(row=2 + tenantRow, column=4, columnspan=2, sticky="n")
 
 def saveTenants(window):
@@ -85,11 +89,27 @@ def saveTenants(window):
         for c in range(0, 6):
             entry = window.grid_slaves(row=r, column=c)[0]
             tenantEntries.append(entry.get())
-        tenant = Tenant(tenantEntries[0], tenantEntries[1], tenantEntries[2], tenantEntries[3], tenantEntries[4], tenantEntries[5])
+        tenant = Tenant(tenantEntries[0], tenantEntries[1], tenantEntries[2], tenantEntries[3], tenantEntries[4], tenantEntries[5], "None", "None", "None")
         tenantEntries.clear()
         tenantList.append(tenant)
+
+    # add last 3 entries from csv to prevent them from being overwritten
+    with open('tenantTest.txt', 'r') as input:
+        reader = csv.reader(input)
+        rows = list(reader)
+    # go through all current rows on screen
+    for i in range(len(tenantList)):
+        # will loop through all loops to find the correct one and add last three entries
+        for j in range(len(rows)):
+            row = rows[j]
+            if (tenantList[i].firstName == row[0] and tenantList[i].apt == row[5]):
+                tenantList[i].paymentDueDate = row[6]
+                tenantList[i].paymentDate = row[7]
+                tenantList[i].isPaid = row[8]
+            
+
     # save list to a csv
-    with open("tenantTest.txt", "w", newline="") as output:
+    with open('tenantTest.txt', 'w', newline='') as output:
         writer = csv.writer(output)
         for entry in tenantList:
             writer.writerow(entry)
@@ -109,11 +129,12 @@ def populateList(window, saveTenantButton, addTenantButton, removeTenantButton):
                 entry.grid(row=i+2, column=j, padx=5, pady=10)
                 # set the value of the Entry widget to the value from the CSV file
                 entry.insert(0, value)
+                if j == 5: break
                 
             tenantRow += 1
 
     addTenantButton.grid(row=2 + tenantRow, column=0, columnspan=2, sticky="n")
-    saveTenantButton.grid(row=2 + tenantRow, column=2, columnspan=3, sticky="n")
+    saveTenantButton.grid(row=2 + tenantRow, column=2, columnspan=2, sticky="n")
     removeTenantButton.grid(row=2 + tenantRow, column=4, columnspan=2, sticky="n")
 
 
@@ -147,8 +168,8 @@ def startTenantList():
     addTenantButton = Button(window, text="Add Tenant", command=lambda: addTenantRow(window, saveTenantButton, addTenantButton, removeTenantButton))
     addTenantButton.grid(row=2 + tenantRow, column=0, columnspan=2, sticky="n")
     # create save button
-    saveTenantButton = Button(window, text="Save", command=lambda: saveTenants(window))
-    saveTenantButton.grid(row=2 + tenantRow, column=2, columnspan=3, sticky="n")
+    saveTenantButton = Button(window, text="Save", width=30, command=lambda: saveTenants(window))
+    saveTenantButton.grid(row=2 + tenantRow, column=2, columnspan=2, sticky="n")
     removeTenantButton = Button(window, text="Remove Tenant", command=lambda: removeTenantRow(window))
     removeTenantButton.grid(row=2 + tenantRow, column=4, columnspan=2, sticky="n")
     # populate list from a csv
