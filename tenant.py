@@ -76,6 +76,7 @@ def addTenantRow(window,saveTenantButton, addTenantButton, removeTenantButton):
     newApt.grid(row=2 + tenantRow, column=5, padx=5, pady=10)
 
     tenantRow += 1
+    # update position of buttons
     addTenantButton.grid(row=2 + tenantRow, column=0, columnspan=2, sticky="n")
     saveTenantButton.grid(row=2 + tenantRow, column=2, columnspan=2, sticky="n")
     removeTenantButton.grid(row=2 + tenantRow, column=4, columnspan=2, sticky="n")
@@ -170,6 +171,7 @@ def startTenantList():
     # create save button
     saveTenantButton = Button(window, text="Save", width=30, command=lambda: saveTenants(window))
     saveTenantButton.grid(row=2 + tenantRow, column=2, columnspan=2, sticky="n")
+    # create remove button
     removeTenantButton = Button(window, text="Remove Tenant", command=lambda: removeTenantRow(window))
     removeTenantButton.grid(row=2 + tenantRow, column=4, columnspan=2, sticky="n")
     # populate list from a csv
