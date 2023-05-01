@@ -1,22 +1,24 @@
-import tkinter as tk
-from tkinter import ttk
+from tkinter import *
+from ExpenseRecord import *
   
-  
-def menu():
-    root = tk.Tk()
-    root.title("Tab Widget")
-    tabControl = ttk.Notebook(root)
-    
-    tab1 = ttk.Frame(tabControl)
-    tab2 = ttk.Frame(tabControl)
-    tab3 = ttk.Frame(tabControl)
-    tab4 = ttk.Frame(tabControl)
-    
-    tabControl.add(tab1, text ='Tenant List')
-    tabControl.add(tab2, text ='Rental Income Record')
-    tabControl.add(tab3, text='Expense Record')
-    tabControl.add(tab4, text='Annual Summary')
-    tabControl.pack(expand = 1, fill ="both")
 
-    root.mainloop()
+def menu():
+    window = Tk()
+    titleLabel = Label(window, text="Menu", font=("Arial", 14), padx=10, pady=10)
+    titleLabel.grid(row=0, column=0, columnspan=6, sticky="N")
+
+    tenantButton = Button(window, text="View Tenant List")
+    tenantButton.grid(row=1, column=2)
     
+    rentalButton = Button(window, text="View Rental Income Record")
+    rentalButton.grid(row=2, column=2)
+    
+    expenseButton = Button(window, text="View Expense Record", command=lambda: [expenseRecord()])
+    expenseButton.grid(row=3, column=2)
+
+    annualButton = Button(window, text="View Annual Summary")
+    annualButton.grid(row=4, column=2)
+
+    window.mainloop()
+
+menu()
