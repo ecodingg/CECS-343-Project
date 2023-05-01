@@ -7,9 +7,6 @@ from menu import menu
 
 def login():
    root = tk.Tk()
-   #These are string inputs for buttons
-   username = tk.StringVar()
-   password = tk.StringVar()
 
    introText = Label(root, text="Welcome!")
    loginText = Label(root, text="User Name")
@@ -21,8 +18,6 @@ def login():
    passwordText.pack(side = LEFT)
    passwordButton = Text(root, height=1, width=16, font=("Arial", 10))
    passwordButton.pack(side = LEFT)
-   return loginText, passwordText
-   top.mainloop()
 
    def verify():
       user = loginButton.get(1.0, "end-1c")
@@ -44,7 +39,7 @@ def login():
          else:
             #If nothing in loginINfo.csv
             messagebox.showinfo("System", "Incorrect username or password.")
-   
+      
    submitButton = Button(root, bd =5, text="Login", command=verify)
    submitButton.pack(side = BOTTOM)
 

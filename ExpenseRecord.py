@@ -99,34 +99,6 @@ def expenseRecord():
                     mainExpenseList.append(expenseRecord)
         loadButton.destroy()
 
-    def sumExpense():
-        sum = 0
-        with open("expenserecord.csv", 'r') as f:
-            csv_reader = csv.reader(f)
-            for line_no, line in enumerate(csv_reader, 1):
-                if line_no == 1:
-                    pass
-                else:
-                    sum += float(line[2])
-        return sum
-    
-    def sumBudget():
-        list = dict()
-        with open("expenserecord.csv", 'r') as f:
-            csv_reader = csv.reader(f)
-            for line_no, line in enumerate(csv_reader, 1):
-                if line_no == 1:
-                    pass
-                else:
-                    if (line[3] in list):
-                        num = float(list[line[3]])
-                        num += float(line[2])
-                        list[line[3]] = str(num)
-                    else:
-                        list.update({line[3]: line[2]})
-        return list
-
-
     window = Tk()
     titleLabel = Label(window, text="Expense Record", font=("Arial", 16), padx=10, pady=10)
     titleLabel.grid(row=0, column=0, columnspan=6, sticky="N")
@@ -151,6 +123,36 @@ def expenseRecord():
     loadButton.grid(row=100, column=4)
 
     window.mainloop()
+
+def sumExpense():
+    sum = 0
+    with open("expenserecord.csv", 'r') as f:
+        csv_reader = csv.reader(f)
+        for line_no, line in enumerate(csv_reader, 1):
+            if line_no == 1:
+                pass
+            else:
+                sum += float(line[2])
+    return sum
+    
+def sumBudget():
+    list = dict()
+    with open("expenserecord.csv", 'r') as f:
+        csv_reader = csv.reader(f)
+        for line_no, line in enumerate(csv_reader, 1):
+            if line_no == 1:
+                pass
+            else:
+                if (line[3] in list):
+                    num = float(list[line[3]])
+                    num += float(line[2])
+                    list[line[3]] = str(num)
+                else:
+                    list.update({line[3]: line[2]})
+    return list
+
+
+
 
     #FOR ANNUAL SUMMARY
     #test = sumBudget()
