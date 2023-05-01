@@ -138,7 +138,14 @@ def populateList(window, saveTenantButton, addTenantButton, removeTenantButton):
     saveTenantButton.grid(row=2 + tenantRow, column=2, columnspan=2, sticky="n")
     removeTenantButton.grid(row=2 + tenantRow, column=4, columnspan=2, sticky="n")
 
-
+def returnRentalIncome():
+    rentSum = 0
+    with open('tenantTest.txt', newline='') as input:
+        reader = csv.reader(input)
+        # iterate over each row in the CSV file
+        for row in reader:
+            rentSum += int(row[4])
+    return rentSum
 
 def startTenantList():
     
