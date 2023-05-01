@@ -6,6 +6,32 @@ tenants = []
 def rentalIncome():
     startWindow()
 
+    def startWindow():
+        titleLabel = Label(window, text="Rental Income Record", font=("Arial", 16), padx=10, pady=10)
+        titleLabel.grid(row=0, column=0, columnspan=6, sticky="N")
+
+        nameLabel = Label(window, text="Name", font=("Arial", 14), padx=10, pady=10)
+        rentLabel = Label(window, text="Rent", font=("Arial", 14), padx=10, pady=10)
+        dueDatelLabel = Label(window, text="Payment Due Date", font=("Arial", 14), padx=10, pady=10)
+        payDateLabel = Label(window, text="Payment Date", font=("Arial", 14), padx=10, pady=10)
+        timeLabel = Label(window, text="On Time? (Y/N)", font=("Arial", 14), padx=10, pady=10)
+
+        nameLabel.grid(row = 1, column=0)
+        rentLabel.grid(row = 1, column=1)
+        dueDatelLabel.grid(row = 1, column=2)
+        payDateLabel.grid(row = 1, column=3)
+        timeLabel.grid(row = 1, column=4)
+
+        editButton = Button(window, text="Edit", command=editRecord)
+        editButton.grid(row=100, column=0, columnspan=2, sticky="n")
+        saveButton = Button(window, text="Save", command=save)
+        saveButton.grid(row=100, column=4, columnspan=2, sticky="n")
+        saveFile = Button(window, text="Save To File", command = saveData)
+        saveFile.grid(row=100, column =2, columnspan =2,  sticky = "n")
+
+        writeTenants()
+        window.mainloop()
+
     def removeTenant(email):
         for ten in tenants:
             if(ten.email == email):
@@ -14,7 +40,6 @@ def rentalIncome():
         removeTenant(email)
         for label in window.winfo_children():
             label.destroy()
-        startWindow()
 
     def readData():
         f = open("tenantTest.txt","r")
@@ -23,6 +48,7 @@ def rentalIncome():
             resident = Tenant(split[0],split[1],split[2],split[3],split[4],split[5],split[6],split[7],split[8])
             tenants.append(resident)
         f.close()
+        
     def saveData():
         f = open("tenantTest.txt","w")
         for tenant in tenants:
@@ -119,29 +145,5 @@ def rentalIncome():
 
 
     window = Tk()
-    def startWindow():
-        titleLabel = Label(window, text="Rental Income Record", font=("Arial", 16), padx=10, pady=10)
-        titleLabel.grid(row=0, column=0, columnspan=6, sticky="N")
 
-        nameLabel = Label(window, text="Name", font=("Arial", 14), padx=10, pady=10)
-        rentLabel = Label(window, text="Rent", font=("Arial", 14), padx=10, pady=10)
-        dueDatelLabel = Label(window, text="Payment Due Date", font=("Arial", 14), padx=10, pady=10)
-        payDateLabel = Label(window, text="Payment Date", font=("Arial", 14), padx=10, pady=10)
-        timeLabel = Label(window, text="On Time? (Y/N)", font=("Arial", 14), padx=10, pady=10)
-
-        nameLabel.grid(row = 1, column=0)
-        rentLabel.grid(row = 1, column=1)
-        dueDatelLabel.grid(row = 1, column=2)
-        payDateLabel.grid(row = 1, column=3)
-        timeLabel.grid(row = 1, column=4)
-
-        editButton = Button(window, text="Edit", command=editRecord)
-        editButton.grid(row=100, column=0, columnspan=2, sticky="n")
-        saveButton = Button(window, text="Save", command=save)
-        saveButton.grid(row=100, column=4, columnspan=2, sticky="n")
-        saveFile = Button(window, text="Save To File", command = saveData)
-        saveFile.grid(row=100, column =2, columnspan =2,  sticky = "n")
-
-        writeTenants()
-        window.mainloop()
 
