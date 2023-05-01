@@ -40,6 +40,7 @@ def login():
                root.destroy()
                menu()
          else:
+            #If nothing in loginINfo.csv
             messagebox.showinfo("System", "Incorrect username or password.")
    
    submitButton = Button(root, bd =5, text="Login", command=verify)
