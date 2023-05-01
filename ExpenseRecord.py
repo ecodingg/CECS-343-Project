@@ -118,7 +118,12 @@ def expenseRecord():
                 if line_no == 1:
                     pass
                 else:
-                    list.update({line[3]: line[2]})
+                    if (line[3] in list):
+                        num = float(list[line[3]])
+                        num += float(line[2])
+                        list[line[3]] = str(num)
+                    else:
+                        list.update({line[3]: line[2]})
         return list
 
 
