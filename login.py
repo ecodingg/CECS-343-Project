@@ -2,6 +2,7 @@ import csv
 from csv import *
 from tkinter import *
 import tkinter as tk
+import os
 from tkinter import messagebox
 from menu import menu
 
@@ -24,7 +25,7 @@ def login():
       password = passwordButton.get(1.0, "end-1c")
       userCheck = False
       passwordCheck = False
-      with open("loginInfo.csv", 'r') as f:
+      with open("loginInfo.csv", 'r', encoding="UTF-8", newline="") as f:
          csv_reader = csv.reader(f)
          for line_no, line in enumerate(csv_reader, 1):
             if line_no == 1:
@@ -37,9 +38,17 @@ def login():
                root.destroy()
                menu()
          else:
-            #If nothing in loginINfo.csv
-            messagebox.showinfo("System", "Incorrect username or password.")
-      
+            f.close()
+            with open("loginInfo.csv", 'a', encoding="UTF-8", newline="") as d:
+               if (os.stat("loginInfo.csv").st_size == 0):
+                  Writer = writer(d)
+                  Writer.writerow([user])
+                  Writer.writerow([password])
+                  root.destroy()
+                  menu()
+               else:
+                  messagebox.showinfo("System", "Incorrect username or password.")
+
    submitButton = Button(root, bd =5, text="Login", command=verify)
    submitButton.pack(side = BOTTOM)
 
