@@ -1,81 +1,52 @@
+import csv
+from csv import *
 from tkinter import *
+import tkinter as tk
+from tkinter import messagebox
 from menu import menu
 
-
-# class LoginInfo:
-#    username: str
-#    password: str
-
-
-
 def login():
-   LoginInput()
+   root = tk.Tk()
+   #These are string inputs for buttons
+   username = tk.StringVar()
+   password = tk.StringVar()
 
-   
-
-def LoginInput():
-   #Inputting Login Credentials 
-   top = Tk()
-   loginText = Label(top, text="User Name")
+   introText = Label(root, text="Welcome!")
+   loginText = Label(root, text="User Name")
+   introText.pack(side = TOP)
    loginText.pack( side = LEFT)
-   loginButton = Entry(top, bd =5)
+   loginButton = Text(root, height=1, width=16, font=("Arial", 10))
    loginButton.pack(side = LEFT)
-   passwordText = Label(top, text="Password")
-   passwordText.pack( side = LEFT)
-   passwordButton = Entry(top, bd =5)
+   passwordText = Label(root, text="Password")
+   passwordText.pack(side = LEFT)
+   passwordButton = Text(root, height=1, width=16, font=("Arial", 10))
    passwordButton.pack(side = LEFT)
    return loginText, passwordText
    top.mainloop()
 
-   username = loginButton
-   password = passwordButton
-
-   test = loginCredentials()
-
-   if (test):
-      # credentials = LoginInfo()
-      # credentials.username = username
-      # credentials.password = password
+   def verify():
+      user = loginButton.get(1.0, "end-1c")
+      password = passwordButton.get(1.0, "end-1c")
+      userCheck = False
+      passwordCheck = False
+      with open("loginInfo.csv", 'r') as f:
+         csv_reader = csv.reader(f)
+         for line_no, line in enumerate(csv_reader, 1):
+            if line_no == 1:
+               if user == line[0]:
+                  userCheck = True
+            if line_no == 2:
+               if password == line[0]:
+                  passwordCheck = True
+         if (userCheck) and (passwordCheck):
+               root.destroy()
+               menu()
+         else:
+            #If nothing in loginINfo.csv
+            messagebox.showinfo("System", "Incorrect username or password.")
    
-      f = open("loginInfo.txt", "w")
-      f.write(username)
-      f.write("\n")
-      f.write(password)
-      f.close()
-   
-      top.mainloop()
-      return loginCredentials
-   else:
-      testTwo = loginValidation(username, password)
-      if (testTwo):
-         menu()
-      else:
-         print("Try to login again")
+   submitButton = Button(root, bd =5, text="Login", command=verify)
+   submitButton.pack(side = BOTTOM)
 
+   root.mainloop()
 
-   
-   
-#Checks to see that Login works
-def loginValidation(user, passW):
-   f = open("loginInfo.txt", "w")
-   loginArray = []
-   
-   for i in range(1,3):
-      loginArray.append(f.readline())
-
-   if (user == loginArray[1]):
-      if(passW == loginArray[2]):
-         return True
-   else:
-      print("Incorrect Login Credentials")
-      return False
-
-
-def loginCredentials():
-   f = open("loginInfo.txt", "w")
-   if (len(f.read()) == 0):
-      return True
-   else:
-      return False
-   
-   
