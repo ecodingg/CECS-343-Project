@@ -1,8 +1,9 @@
+import csv
+from csv import *
 from tkinter import *
 import tkinter as tk
-import os
+from tkinter import messagebox
 from menu import menu
-
 
 def login():
    root = tk.Tk()
@@ -14,56 +15,35 @@ def login():
    loginText = Label(root, text="User Name")
    introText.pack(side = TOP)
    loginText.pack( side = LEFT)
-   loginButton = Entry(root, bd =5, textvariable=username)
+   loginButton = Text(root, height=1, width=16, font=("Arial", 10))
    loginButton.pack(side = LEFT)
    passwordText = Label(root, text="Password")
    passwordText.pack(side = LEFT)
-   passwordButton = Entry(root, bd =5, textvariable=password)
+   passwordButton = Text(root, height=1, width=16, font=("Arial", 10))
    passwordButton.pack(side = LEFT)
 
+   def verify():
+      user = loginButton.get(1.0, "end-1c")
+      password = passwordButton.get(1.0, "end-1c")
+      userCheck = False
+      passwordCheck = False
+      with open("loginInfo.csv", 'r') as f:
+         csv_reader = csv.reader(f)
+         for line_no, line in enumerate(csv_reader, 1):
+            if line_no == 1:
+               if user == line[0]:
+                  userCheck = True
+            if line_no == 2:
+               if password == line[0]:
+                  passwordCheck = True
+         if (userCheck) and (passwordCheck):
+               root.destroy()
+               menu()
+         else:
+            messagebox.showinfo("System", "Incorrect username or password.")
+   
+   submitButton = Button(root, bd =5, text="Login", command=verify)
+   submitButton.pack(side = BOTTOM)
+
    root.mainloop()
-   if (loginCredentials() == True):
-      f = open("loginInfo.txt", "w", encoding="UTF8", newline="")
-      #This is how you write it to file
-      f.write(username.get())
-      f.write("\n")
-      f.write(password.get())
-      f.close()
 
-      root.destroy()
-      menu()
-   else:
-      if (loginValidation(username.get(), password.get())):
-         root.destroy()
-         menu()
-      else:
-         print("Try to login again")
-
-   
-#Checks to see that Login works
-def loginValidation(user, passW):
-   f = open("loginInfo.txt", "r", encoding="UTF8", newline="")
-   loginArray = []
-   content = f.readlines()
-   
-   loginArray.append(content[0])
-   loginArray.append(content[1])
-   
-   print(user)
-
-   if (user == loginArray[0]):
-      if(passW == loginArray[1]):
-         return True
-   else:
-      return False
-
-
-def loginCredentials():
-   loginSize = os.stat("loginInfo.txt").st_size
-   if (loginSize == 0):
-      return True
-   else:
-      print("Incorrect Password")
-      return False
-   
-   
