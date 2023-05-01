@@ -17,8 +17,7 @@ def readData():
     f = open("tenantTest.txt","r")
     for x in f:
         split = x.split(",")
-        resident = Tenant(split[0],split[1],split[2],split[3],split[4],split[5])
-        resident.incomeRecord(split[6],split[7],split[8])
+        resident = Tenant(split[0],split[1],split[2],split[3],split[4],split[5],split[6],split[7],split[8])
         tenants.append(resident)
     f.close()
 def saveData():
@@ -37,11 +36,11 @@ def writeTenants(): #reads TenantLists and make chart in window
         tName.grid(row = tRow, column = 0)
         tRent = Label(window, text=tenant.rent, font=("Arial", 14), padx=10, pady=10)
         tRent.grid(row = tRow, column=1)
-        tPDD = Label(window, text = tenant.payDue, font=("Arial", 14), padx=10, pady=10)
+        tPDD = Label(window, text = tenant.paymentDueDate, font=("Arial", 14), padx=10, pady=10)
         tPDD.grid(row=tRow, column=2)
-        tPD = Label(window, text = tenant.paidDate , font=("Arial", 14), padx=10, pady=10)
+        tPD = Label(window, text = tenant.paymentDate , font=("Arial", 14), padx=10, pady=10)
         tPD.grid(row = tRow, column=3)
-        tOnTime = Label(window, text = tenant.onTime, font=("Arial", 14), padx=10, pady=10)
+        tOnTime = Label(window, text = tenant.isPaid, font=("Arial", 14), padx=10, pady=10)
         tOnTime.grid(row=tRow, column=4)
         delete = Button(window, text = 'X', command=lambda email = tenant.email: removeRow(email))
         delete.grid(row = tRow, column = 5)
@@ -58,13 +57,13 @@ def editRecord():
         tRent.insert(0, tenant.rent)
         tRent.grid(row = tRow, column=1)
         tPDD = Entry(window)
-        tPDD.insert(0, tenant.payDue)
+        tPDD.insert(0, tenant.paymentDueDate)
         tPDD.grid(row=tRow, column=2)
         tPD = Entry(window)
-        tPD.insert(0,tenant.paidDate)
+        tPD.insert(0,tenant.paymentDate)
         tPD.grid(row = tRow, column=3)
         tOnTime = Entry(window)
-        tOnTime.insert(0,tenant.onTime)
+        tOnTime.insert(0,tenant.isPaid)
         tOnTime.grid(row=tRow, column=4)
 
         tRow = tRow +1
@@ -143,5 +142,9 @@ def startWindow():
     writeTenants()
     window.mainloop()
 
-readData()
-startWindow()
+def main():
+    readData()
+    startWindow()
+
+if __name__ == "__main__":
+    main()
