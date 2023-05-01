@@ -177,5 +177,3 @@ def startTenantList():
     # populate list from a csv
     populateList(window, saveTenantButton, addTenantButton, removeTenantButton)
     window.mainloop()
-
-startTenantList()

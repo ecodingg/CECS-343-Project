@@ -1,7 +1,7 @@
 John,Morales,jmisgod@gmail.com,24,1600,1,5/1/23,4/28/23,Y
 Kevin,Quan,kquanlegend@gmail.com,22,1500,2,5/1/23,4/24/23,Y
-Eden,Lee,ELeerampage@gmail.com,21,1600,3,5/1/23,NOTPAID,N
 djfhsjd,dfs,dfsd,4,4,4,5/1/23,NOTPAID,N
 test,t,t,12,9000,55,None,None,None
 Kratos,Sparta,ghost@email.com,77,7000,78,None,None,None
 Mario,Mario,mario@example.com,50,8888,5,None,None,None
+Luigi,Mario,luigi@example.com,45,9999,7,None,None,None
