@@ -2,6 +2,7 @@ from tkinter import *
 from ExpenseRecord import *
 from tenant import *
 from rentalIncomeRecord import *
+from annualSummary import *
   
 
 def menu():
@@ -18,7 +19,7 @@ def menu():
     expenseButton = Button(window, text="View Expense Record", command=lambda: [expenseRecord()])
     expenseButton.grid(row=3, column=2)
 
-    annualButton = Button(window, text="View Annual Summary")
+    annualButton = Button(window, text="View Annual Summary", command=lambda: [annualSummary()])
     annualButton.grid(row=4, column=2)
 
     window.mainloop()
