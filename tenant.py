@@ -144,7 +144,8 @@ def returnRentalIncome():
         reader = csv.reader(input)
         # iterate over each row in the CSV file
         for row in reader:
-            rentSum += int(row[4])
+            if row[7] != "NOTPAID":
+                rentSum += int(row[4])
     return rentSum
 
 def startTenantList():

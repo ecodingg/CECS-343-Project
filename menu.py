@@ -13,7 +13,7 @@ def menu():
     tenantButton = Button(window, text="View Tenant List", command=lambda: [startTenantList()])
     tenantButton.grid(row=1, column=2)
     
-    rentalButton = Button(window, text="View Rental Income Record", command=lambda: [rentalIncome()])
+    rentalButton = Button(window, text="View Rental Income Record", command=lambda: [startWindow()])
     rentalButton.grid(row=2, column=2)
     
     expenseButton = Button(window, text="View Expense Record", command=lambda: [expenseRecord()])
