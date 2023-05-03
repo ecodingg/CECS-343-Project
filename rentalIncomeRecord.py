@@ -1,20 +1,20 @@
 from tkinter import *
 from tenant import Tenant
 import csv
-global count
-count = 0
 tenants = []
 
 def removeTenant(email):
     for ten in tenants:
         if(ten.email == email):
             tenants.remove(ten)
-def removeRow(email):
+def removeRow(window,email):
     removeTenant(email)
     for label in window.winfo_children():
         label.destroy()
+    startWindow(window)
 
 def readData():
+    tenants.clear()
     f = open("tenantTest.txt","r")
     for x in f:
         split = x.split(",")
@@ -28,8 +28,9 @@ def saveData():
         f.write(tenant.rent + "," + tenant.apt + "," + tenant.paymentDueDate + "," + tenant.paymentDate + "," + tenant.isPaid )
     f.close()
 
-def writeTenants(): #reads TenantLists and make chart in window
+def writeTenants(window): #reads TenantLists and make chart in window
     # print("READ FROM THE LIST AND ADD THEM")
+
     tRow = 2
     for ten in range(len(tenants)):
         tenant = tenants[ten]
@@ -43,11 +44,11 @@ def writeTenants(): #reads TenantLists and make chart in window
         tPD.grid(row = tRow, column=3)
         tOnTime = Label(window, text = tenant.isPaid, font=("Arial", 14), padx=10, pady=10)
         tOnTime.grid(row=tRow, column=4)
-        delete = Button(window, text = 'X', command=lambda email = tenant.email: removeRow(email))
+        delete = Button(window, text = 'X', command=lambda email = tenant.email: removeRow(window,email))
         delete.grid(row = tRow, column = 5)
         tRow = tRow +1
 
-def editRecord():
+def editRecord(window):
     tRow = 2
     for ten in range(len(tenants)):
         tenant = tenants[ten]
@@ -69,7 +70,7 @@ def editRecord():
 
         tRow = tRow +1
 
-def save():
+def save(window):
     counter = 0
     for label in window.winfo_children():
         if(type(label) == Entry):
@@ -96,8 +97,8 @@ def save():
             counter = counter +1
     for label in window.winfo_children():
         label.destroy()
-    startWindow()
-def addTenantRow():
+    startWindow(window)
+def addTenantRow(window):
     global tenantRow
     newFirstName = Entry(window)
     newLastName = Entry(window)
@@ -116,15 +117,14 @@ def addTenantRow():
     tenantRow += 1
 
 
-def startWindow():
-    global count
-    global window
-    if count == 0:
-        window = Tk()
-        readData()
-        count += 1
-    if count == 1:
-        window = window
+def rentalIncomeRecord():
+    readData()
+    window = Tk()
+    startWindow(window)
+
+def startWindow(window):
+
+    # window = Tk()
     titleLabel = Label(window, text="Rental Income Record", font=("Arial", 16), padx=10, pady=10)
     titleLabel.grid(row=0, column=0, columnspan=6, sticky="N")
 
@@ -140,15 +140,12 @@ def startWindow():
     payDateLabel.grid(row = 1, column=3)
     timeLabel.grid(row = 1, column=4)
 
-    editButton = Button(window, text="Edit", command=editRecord)
+    editButton = Button(window, text="Edit", command=lambda: editRecord(window))
     editButton.grid(row=100, column=0, columnspan=2, sticky="n")
-    saveButton = Button(window, text="Save", command=save)
+    saveButton = Button(window, text="Save", command=lambda: save(window))
     saveButton.grid(row=100, column=4, columnspan=2, sticky="n")
-    saveFile = Button(window, text="Save To File", command = saveData)
+    saveFile = Button(window, text="Save To File", command=lambda:  saveData())
     saveFile.grid(row=100, column =2, columnspan =2,  sticky = "n")
-
-    writeTenants()
+    writeTenants(window)
     window.mainloop()
 
-#readData()
-#startWindow()
