@@ -124,7 +124,7 @@ def startWindow():
         readData()
         count += 1
     if count == 1:
-        window = Tk()
+        window = window
     titleLabel = Label(window, text="Rental Income Record", font=("Arial", 16), padx=10, pady=10)
     titleLabel.grid(row=0, column=0, columnspan=6, sticky="N")
 

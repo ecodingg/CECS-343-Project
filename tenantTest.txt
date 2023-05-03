@@ -1,4 +1,4 @@
 John,Morales,jmisgod@gmail.com,24,1600,1,5/1/23,4/28/23,Y
 Kevin,Quan,kquanlegend@gmail.com,22,1500,2,5/1/23,4/24/23,Y
 Eden,Lee,ELeerampage@gmail.com,21,1600,3,5/1/23,NOTPAID,N
-George,Lopez,GLopez@gmail.com,34,1800,4,5/1/23,4/26/28,N
+George,Lopez,GLopez@gmail.com,34,1800,4,5/1/23,4/26/28,Y
