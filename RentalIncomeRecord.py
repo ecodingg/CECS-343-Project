@@ -1,9 +1,9 @@
 from tkinter import *
 from tenant import Tenant
 import csv
-tenants = []
+global count
 count = 0
-global window
+tenants = []
 
 def removeTenant(email):
     for ten in tenants:
@@ -21,17 +21,15 @@ def readData():
         resident = Tenant(split[0],split[1],split[2],split[3],split[4],split[5],split[6],split[7],split[8])
         tenants.append(resident)
     f.close()
-    
 def saveData():
     f = open("tenantTest.txt","w")
     for tenant in tenants:
         f.write(tenant.firstName + "," + tenant.lastName + "," + tenant.email + "," + tenant.age + ",")
-        f.write(tenant.rent + "," + tenant.apt + "," + tenant.payDue + "," + tenant.paidDate + "," + tenant.onTime )
+        f.write(tenant.rent + "," + tenant.apt + "," + tenant.paymentDueDate + "," + tenant.paymentDate + "," + tenant.isPaid )
     f.close()
 
 def writeTenants(): #reads TenantLists and make chart in window
     # print("READ FROM THE LIST AND ADD THEM")
-    window = Tk()
     tRow = 2
     for ten in range(len(tenants)):
         tenant = tenants[ten]
@@ -50,7 +48,6 @@ def writeTenants(): #reads TenantLists and make chart in window
         tRow = tRow +1
 
 def editRecord():
-    window = Tk()
     tRow = 2
     for ten in range(len(tenants)):
         tenant = tenants[ten]
@@ -73,7 +70,6 @@ def editRecord():
         tRow = tRow +1
 
 def save():
-    window = Tk()
     counter = 0
     for label in window.winfo_children():
         if(type(label) == Entry):
@@ -91,19 +87,17 @@ def save():
             elif (section ==1):
                 tenants[person].rent = label.get()
             elif (section ==2):
-                tenants[person].payDue = label.get()
+                tenants[person].paymentDueDate = label.get()
             elif (section ==3):
-                tenants[person].paidDate = label.get()
+                tenants[person].paymentDate = label.get()
             elif (section ==4):
-                tenants[person].onTime = label.get()
+                tenants[person].isPaid = label.get()
 
             counter = counter +1
     for label in window.winfo_children():
         label.destroy()
     startWindow()
-
 def addTenantRow():
-    window = Tk()
     global tenantRow
     newFirstName = Entry(window)
     newLastName = Entry(window)
@@ -124,7 +118,13 @@ def addTenantRow():
 
 def startWindow():
     global count
-    window = Tk()
+    global window
+    if count == 0:
+        window = Tk()
+        readData()
+        count += 1
+    if count == 1:
+        window = Tk()
     titleLabel = Label(window, text="Rental Income Record", font=("Arial", 16), padx=10, pady=10)
     titleLabel.grid(row=0, column=0, columnspan=6, sticky="N")
 
@@ -147,8 +147,8 @@ def startWindow():
     saveFile = Button(window, text="Save To File", command = saveData)
     saveFile.grid(row=100, column =2, columnspan =2,  sticky = "n")
 
-    if count == 0:
-        readData()
-        count+=1
     writeTenants()
     window.mainloop()
+
+#readData()
+#startWindow()
